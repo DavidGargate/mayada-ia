@@ -1,0 +1,12 @@
+﻿{
+  "segunda guerra mundial": {
+    "inicio": 1939,
+    "fin": 1945,
+    "descripcion": "Fue un conflicto militar global que involucró a la mayoría de las naciones del mundo."
+  },
+  "primera guerra mundial": {
+    "inicio": 1914,
+    "fin": 1918,
+    "descripcion": "Conflicto bélico centrado en Europa con impacto mundial."
+  }
+}
