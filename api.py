@@ -22,3 +22,8 @@ class Pregunta(BaseModel):
 def preguntar(data: Pregunta):
     respuesta = ia.responder(data.pregunta)
     return {"respuesta": respuesta}
+
+
+@app.get("/")
+def root():
+    return {"status": "ok"}
