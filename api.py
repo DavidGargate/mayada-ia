@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from ia import IAPequena
 
+
+
+
 app = FastAPI()
 
 # CORS (permitir web / frontend)
@@ -14,7 +17,7 @@ app.add_middleware(
 )
 
 # Instancia única de la IA
-ia = IAPequena("conocimiento.json")
+ia = IAPequena("conocimiento.json", "conocimiento_dinamico.json")
 
 # Modelo de entrada
 class Pregunta(BaseModel):
