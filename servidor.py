@@ -1,28 +1,41 @@
-from ia import IAPequena
+from fastapi import FastAPI, Query
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from ia import IAPequenaPro
+from config import ADMIN_KEY  # solo ADMIN_KEY
 
-ia = IAPequena("conocimiento.json")
+app = FastAPI()
 
-print("🤖 IA lista. Escribe una pregunta (salir para terminar)\n")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-while True:
-    pregunta = input("Tú: ").strip()
-    if pregunta.lower() == "salir":
-        print("Adiós 👋")
-        break
+# Instancia IA usando Wikipedia
+ia = IAPequenaPro(
+    archivo_base="conocimiento.json",
+    archivo_dinamico="conocimiento_dinamico.json",
+    idioma="es"
+)
 
-    respuesta = ia.responder(pregunta)
-    print("IA:", respuesta)
+class Pregunta(BaseModel):
+    pregunta: str | None = None
+    ensena: str | None = None
 
-    # Si la IA pide aprendizaje, preguntar si quiere enseñar
-    if ia.esperando_aprendizaje:
-        opcion = input("¿Quieres enseñarle algo? (s/n): ").lower()
+@app.post("/preguntar")
+def preguntar(data: Pregunta):
+    if not data.pregunta:
+        return {"respuesta": "❌ No se recibió ninguna pregunta."}
+    respuesta = ia.responder(data.pregunta)
+    return {"respuesta": respuesta}
 
-        if opcion == "s":
-            info = input("Enseñanza: ")
-            tema = ia.esperando_aprendizaje
-            ia.aprender_info(tema, info)
-            ia.esperando_aprendizaje = None
-            print(f"IA: ✅ He aprendido sobre {tema}")
-        else:
-            ia.esperando_aprendizaje = None
-            print("IA: Está bien, no aprenderé eso.")
+@app.post("/aprender")
+def aprender(data: Pregunta, api_key: str = Query(...)):
+    if api_key != ADMIN_KEY:
+        return {"error": "No autorizado"}
+    if not data.pregunta or not data.ensena:
+        return {"error": "Faltan datos"}
+    respuesta = ia.aprender_info_segura(data.pregunta, data.ensena)
+    return {"respuesta": respuesta}
