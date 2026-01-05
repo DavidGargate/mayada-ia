@@ -5,7 +5,7 @@ from ia import IAPequena
 
 app = FastAPI()
 
-# Permitir acceso desde la web
+# CORS (permitir web / frontend)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,17 +13,38 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Instancia única de la IA
 ia = IAPequena("conocimiento.json")
 
+# Modelo de entrada
 class Pregunta(BaseModel):
-    pregunta: str
+    pregunta: str | None = None
+    ensena: str | None = None
 
 @app.post("/preguntar")
 def preguntar(data: Pregunta):
-    respuesta = ia.responder(data.pregunta)
-    return {"respuesta": respuesta}
 
+    # 🔹 CASO 1: El usuario está enseñando algo
+    if data.ensena:
+        if not ia.esperando_aprendizaje:
+            return {
+                "respuesta": "⚠️ No te pedí aprender nada todavía."
+            }
 
-@app.get("/")
-def root():
-    return {"status": "ok"}
+        tema = ia.esperando_aprendizaje
+        ia.aprender_info(tema, data.ensena)
+        ia.esperando_aprendizaje = None
+
+        return {
+            "respuesta": f"✅ He aprendido sobre: {tema}"
+        }
+
+    # 🔹 CASO 2: Pregunta normal
+    if data.pregunta:
+        respuesta = ia.responder(data.pregunta)
+        return {"respuesta": respuesta}
+
+    # 🔹 CASO 3: Entrada inválida
+    return {
+        "respuesta": "❌ No se recibió ninguna pregunta."
+    }

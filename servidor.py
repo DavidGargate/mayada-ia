@@ -1,4 +1,4 @@
-﻿from ia import IAPequena
+from ia import IAPequena
 
 ia = IAPequena("conocimiento.json")
 

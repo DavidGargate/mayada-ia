@@ -1,4 +1,4 @@
-﻿{
+{
   "segunda guerra mundial": {
     "inicio": 1939,
     "fin": 1945,
@@ -7,6 +7,18 @@
   "primera guerra mundial": {
     "inicio": 1914,
     "fin": 1918,
-    "descripcion": "Conflicto bélico centrado en Europa con impacto mundial."
+    "descripcion": "Conflicto bélico centrado en Europa que tuvo impacto a nivel mundial."
+  },
+  "saludo informal": {
+    "descripcion": "Estoy bien, gracias por preguntar 😊 ¿Y tú cómo estás?"
+  },
+  "mayada": {
+    "descripcion": "Mayada es una aplicación de emojis donde las personas pueden expresarse libremente y de forma creativa."
+  },
+  "expresion espectacular e increible": {
+    "descripcion": "Es una expresión que se usa para decir que algo es muy bueno, sorprendente o impresionante."
+  },
+  "q tal": {
+    "descripcion": "sas"
   }
 }
