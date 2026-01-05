@@ -2,7 +2,7 @@
 import re
 import wikipedia
 
-class IAPequenaPro:
+class IAPequena:
     def __init__(self, archivo_base, archivo_dinamico, idioma="es"):
         self.archivo_base = archivo_base
         self.archivo_dinamico = archivo_dinamico
