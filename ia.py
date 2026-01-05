@@ -4,6 +4,8 @@ import wikipedia
 
 class IAPequena:
     def __init__(self, archivo_base, archivo_dinamico, idioma="es"):
+        # todo tu código aquí
+
         self.archivo_base = archivo_base
         self.archivo_dinamico = archivo_dinamico
         wikipedia.set_lang(idioma)
